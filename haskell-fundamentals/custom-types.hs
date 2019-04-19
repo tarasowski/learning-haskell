@@ -61,7 +61,7 @@ data Customer = MakeCustomer
 -- To create a customer record you need a following syntax
 alice :: Customer
 alice = MakeCustomer
-  {customerId = MakeCustomerId 13
+  { customerId = MakeCustomerId 13
   , name = "Alice"
   , luckyNumber = 42
   }
@@ -93,12 +93,12 @@ sally = alice {name = "Sally", luckyNumber = 94}
 -- Algebraic Data Types
 -- Almost every type you use in Haskell will be an algebraic data type
 -- A customer implemented as an ADT
--- ADT definition starts with a `data` keywoard
+-- ADT definition starts with a `data` keyword
 -- followed by a name of the type
 -- followed by a constructor name `MakeCustomer` (Haskell constructors have no code, it's just a value that glues some other values together.
 -- after the constructor name comes the type of the arguments to the constructor
 -- in this case it will be CustomerId (customer id of the created customer), String (the name of the customer), Int (the lucky number of the customer)
--- unline in Records these values are not identified by their field name, they are identified by their position.
+-- unlike in Records these values are not identified by their field name, they are identified by their position.
 data CustomerADT = CustomerADT CustomerId String Int
 -- the name of the ADT and the constructor names can be the same. This is very common.
 
@@ -108,7 +108,7 @@ dimitri = CustomerADT (MakeCustomerId 13) "Dimitri" 11
 -- to extract the value from an ADT you use pattern matching
 getCustomerId (CustomerADT (MakeCustomerId cust_id) name number) = cust_id
 
--- when you do large pattern matching. It can become cumbersome to give names to arguments of the constructor. So Haskell provides a shortcut, if you put underscore in a pattern it's a wildcard. Any underscore will match anything but wan't save any matching variable to a value.
+-- when you do large pattern matching. It can become cumbersome to give names to arguments of the constructor. So Haskell provides a shortcut, if you put underscore in a pattern it's a wildcard. Any underscore will match anything but won't save any matching variable to a value.
 
 getCustomerIdWild (CustomerADT cust_id _ _) = cust_id
 
@@ -135,7 +135,7 @@ hierarchy = StringTree "C:"
 --  ADT are containers for some values. 
 
 -- ADT CONSTRUCTORS
--- ADTs can have multiple constructors. Which is unique to Haskell in comparison to other OOP
+-- ADTs can have multiple constructors. Which is unique to Haskell.
 -- Here is data type Bool' with two constructors False and True
 -- False and True are separated by a pipe character
 -- Neither these constructors take any parameters. Because they don't need any.
@@ -207,7 +207,7 @@ x = Nothing
 
 -- we can define a polymorphic function
 fromMaybe :: a -> Maybe a -> a
-fromMaybe defulatVal Nothing = defaultVal
+fromMaybe defaultVal Nothing = defaultVal
 fromMaybe _ (Just x) = x
 
 

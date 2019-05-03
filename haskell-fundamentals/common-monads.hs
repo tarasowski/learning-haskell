@@ -3,6 +3,8 @@ module CM where
 import Prelude
 import Control.Monad.Reader
 import Control.Monad.State
+import Control.Monad.ST
+import Data.STRef
 
 -- Common Monads
 -- Reader let's you write computations that have access to context value like (the name of the logged in user)
@@ -77,4 +79,19 @@ eight = take 8 positions
 -- ST Monad
 -- Is a a souped-up "aufgemotzt" version of the State Monad.
 -- It allows you to implement imperative algorithms
+-- When the State monad gives you one updatable value representing the state. The ST Monad gives you access to unlimited number of values, that can be each updated independenlty of the other. Like you would have in an imperative language.
+-- data ST s a. Just for the Reader and State monad the second type argument `a` corresponds to the result type of the computation.
+-- However the first type variable `s` plays a more complicated role. In order to use ST monad you may ignore `s` entirely. It's not a type that you choose and won't have any meaningful values.
+-- `s` is used by the type system to enfore functions purity by preventing unrelated ST computations from sharing values.
+-- instance Monad (ST s) -- ST is an instance of the Monad type class and gets all the beneifts that come alongs with that.
+-- runST :: ST s a -> a -- this functions turns an ST value into an ordinary value.
+
+-- Now you have ST Monad you need to declare updatable variables. These comes from different module `Data.STRef`
+-- This module defines a data type `data STRef s a` which represents a reference to a value of type `a` or in other words updatable value of type `a`
+-- The `s` type variable here is exactly the same as `s` type variable as on the ST MOnad type. It keeps the computation which ST this `s` belongs to. And won't let you use it in another ST computation.
+-- newSTRef :: a -> ST s (STRef s a)
+-- It takes a single argument which is the initial value with which STRef should start off. It returns ST computation that's result is the newly created STRef
+-- In order to read the value of STRef you you readSTRef :: STRef s a -> ST s a -- it takes STRef to read from and returns ST value whose result is in that STRef.
+-- writeSTRef :: STRef s a -> a -> ST s () -- the values can be updated with the writeSTRef function. This function takes STRef s a and new value to store `a` and produces ST s () action that will perform that update.
+-- ST Monad allows you to write faster code. It can help you to translate an alogrithm from a high-performance language into Haskell. But you should better change your code to functional style. Complicated, multi-part state. It shouldn't be the main goal to use it in Haskell...
 main = putStrLn "Hello World"
